@@ -26,8 +26,6 @@ import kotlinx.android.synthetic.main.content_lista_veiculos.*
 
 class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
 
-   // private var adapter : ListaVeiculoRecyclerViewAdapter? = null
-    private var daoVeiculo : RoomVeiculoDao? = null
     private var listaVeiculo: MutableList<Veiculo>? = null
 
     private val adapter by lazy {
@@ -41,39 +39,23 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
         provedor.get(ListaVeiculosViewModel::class.java)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_veiculos)
-
         imageAdd.setOnClickListener {
             val paginaNovoVeiculo = Intent(this, FormVeiculoActivity::class.java)
             startActivityForResult(paginaNovoVeiculo, CODIGO_INSERE)
         }
-
         configuraLayout()
         buscaLista()
-        //verificaTamanhoLista()
-
 
         registerForContextMenu(lista_veiculos_view)
     }
 
 
-
-    override fun onResume() {
-        super.onResume()
-//        buscaLista()
-//        if (listaVeiculo != null){
-//            verificaTamanhoLista()
-//        }
-
-
-    }
-
     private fun verificaTamanhoLista() {
 
-        if (listaVeiculo!!.size > 0) {
+        if (listaVeiculo != null && listaVeiculo!!.size > 0) {
             textoLista.text = " "
         } else {
             textoLista.text = resources.getString(R.string.lista_veiculo_nenhum_veiculo)
@@ -81,30 +63,18 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
     }
 
 
-//    private fun buscaLista() {
-//
-//        CarregaListaVeiculoTask(daoVeiculo!!,
-//            object : CarregaListaVeiculoTask.EncontradoListener{
-//                override fun encontrado(lista: MutableList<Veiculo>) {
-//                    listaVeiculo = lista
-//                    configuraListaAdapter(listaVeiculo!!)
-//                    configuraListaLayoutManager()
-//                    verificaTamanhoLista()
-//                }
-//            }).execute()
-//
-//    }
 
     fun configuraLayout() {
         configuraListaAdapter()
         configuraListaLayoutManager()
     }
     private fun buscaLista() {
-
         viewModel.buscaTodos().observe(this, Observer { resource ->
             resource?.let {
-                    adapter.atualiza(it)
+                adapter.atualiza(it)
+                listaVeiculo = it.toMutableList()
             }
+            verificaTamanhoLista()
         })
     }
 
@@ -133,9 +103,6 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
             val veiculoRecebido = data.getSerializableExtra("veiculo") as Veiculo
             adapter.adiciona(veiculoRecebido)
             Toast.makeText(this, "Salvo", Toast.LENGTH_SHORT).show()
-
-
-
         }
         if (requestCode == CODIGO_DETALHES && resultCode == Activity.RESULT_OK && data!!.hasExtra("posicao")){
             val veiculoRecebido = data.getSerializableExtra("veiculo") as Veiculo
@@ -145,18 +112,14 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
             Toast.makeText(this@ListaVeiculosActivity, "$veiculoRecebido deletado", Toast.LENGTH_SHORT).show()
         }
 
-
         if (requestCode == CODIGO_DETALHES && resultCode == Activity.RESULT_OK && data!!.hasExtra("veiculoAlterado") && data.hasExtra("veiculoPosicao")){
             val veiculoRecebido = data.getSerializableExtra("veiculoAlterado") as Veiculo
             val posicao = data.getIntExtra("veiculoPosicao", -CODIGO_INSERE)
             adapter.altera(veiculoRecebido, posicao)
 
         }
-
         super.onActivityResult(requestCode, resultCode, data)
 
     }
-
-
 
 }
