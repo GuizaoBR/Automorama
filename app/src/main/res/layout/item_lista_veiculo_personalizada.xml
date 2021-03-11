@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="?android:attr/selectableItemBackground"
+              android:id="@+id/linearLayout">
+
+
+    <ImageView
+            android:layout_marginTop="20dp"
+            android:id="@+id/imageVeiculo"
+            android:layout_width="107dp"
+            android:src="@drawable/ic_car_list" android:layout_height="115dp" android:layout_marginLeft="10dp"/>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp">
+        <TextView
+                android:id="@+id/textMarcaLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marca"
+                android:textSize="30sp"
+                android:layout_marginTop="8dp"/>
+
+        <TextView
+                android:id="@+id/textModeloLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modelo"
+                android:textSize="20sp"
+                android:layout_marginTop="8dp"
+        />
+        <TextView
+                android:text="Placa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textPlacaLista"
+                android:textSize="20sp"
+                android:layout_marginTop="8dp"
+        />
+        <TextView
+                android:text="Apelido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textApelidoLista"
+                android:textSize="20sp"
+                android:layout_marginTop="8dp"
+        />
+    </LinearLayout>
+
+</LinearLayout>

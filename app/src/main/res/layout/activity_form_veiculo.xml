@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".FormVeiculoActivity">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/anoModelo"
+                android:inputType="numberSigned" android:hint="@string/form_veiculo_ano_modelo"
+                app:layout_constraintEnd_toEndOf="@+id/anoFabricacao"
+                app:layout_constraintStart_toStartOf="@+id/anoFabricacao" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/anoFabricacao"
+        />
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="56dp"
+                android:layout_width="0dp"
+                android:id="@+id/appBarLayout7" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="#640301" app:navigationIcon="?attr/actionModeCloseDrawable"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/marca"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:hint="@string/form_veiculo_marca"
+                app:layout_constraintBottom_toTopOf="@+id/modelo" android:inputType="textCapWords"
+                android:layout_marginBottom="12dp" app:layout_constraintHorizontal_bias="0.45"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" android:layout_marginTop="40dp"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/modelo" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/marca"
+                android:hint="@string/form_veiculo_modelo" app:layout_constraintEnd_toEndOf="@+id/marca"
+                app:layout_constraintStart_toStartOf="@+id/marca"
+                android:inputType="textCapWords"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/anoFabricacao" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/modelo"
+                android:hint="@string/form_veiculo_ano_fabricacao"
+                app:layout_constraintEnd_toEndOf="@+id/modelo" app:layout_constraintStart_toStartOf="@+id/modelo"
+                app:layout_constraintHorizontal_bias="0.0" android:inputType="numberSigned"/>
+        <Button
+                android:text="@string/form_btSalvar"
+            android:foreground="@drawable/ripple_effect"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/btEditarSalvar"
+                android:id="@+id/btSalvar"
+                android:elevation="5dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="40dp" app:layout_constraintTop_toBottomOf="@+id/apelido"
+                app:layout_constraintVertical_bias="1.0" tools:targetApi="lollipop"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textCapCharacters"
+                android:textAllCaps="true"
+                android:ems="10"
+                android:id="@+id/placa"
+                app:layout_constraintEnd_toEndOf="@+id/anoModelo"
+                app:layout_constraintStart_toStartOf="@+id/anoModelo" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/anoModelo" android:hint="@string/form_placa_veiculo"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/apelido"
+                app:layout_constraintEnd_toEndOf="@+id/placa" app:layout_constraintStart_toStartOf="@+id/placa"
+                android:layout_marginTop="40dp" app:layout_constraintTop_toBottomOf="@+id/placa"
+                android:hint="@string/form_veiculo_apelido"/>
+
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/relativeLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/appBarLayout7">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true" app:srcCompat="@drawable/ic_menu_camera"
+                    android:id="@+id/floatCamera" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    tools:layout_editor_absoluteY="244dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true" android:layout_marginBottom="0dp"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true" app:srcCompat="@drawable/ic_remover_foto"
+                    android:id="@+id/floatRemover" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    tools:layout_editor_absoluteY="244dp"
+                    android:layout_alignParentLeft="true" android:visibility="invisible"
+                    android:layout_marginLeft="16dp"
+                    android:layout_alignParentStart="true" android:layout_marginStart="16dp"
+                    android:layout_alignParentBottom="true" android:layout_marginBottom="0dp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" app:srcCompat="@drawable/ic_car_list"
+                    android:id="@+id/imageVeiculo" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/appBarLayout7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"/>
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

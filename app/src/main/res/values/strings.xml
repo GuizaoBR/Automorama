@@ -1,0 +1,89 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Automorama</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="consumo_medio">Consumo médio: %1$s Km/L</string>
+    <string name="sem_consumo_medio">Consumo médio: É necessário pelo menos 2 abastecimentos com o tanque cheio (com exceção do primeiro abastecimento) para fazer a média</string>
+    <string name="consumo_medio_calculando">Consumo médio: Calculando…</string>
+    <string name="detalhes_marca">Marca: %1$s</string>
+    <string name="detalhes_modelo">Modelo: %1$s</string>
+    <string name="detalhes_fabricacao_modelo">Ano Fabricação/Modelo: %1$s/%2$s</string>
+    <string name="detalhes_apelido">Apelido: %1$s</string>
+    <string name="detalhes_Placa">Placa: %1$s</string>
+    <string name="lista_veiculo_nenhum_veiculo">"Nenhum veículo encontrado clique no '+' para cadastrar"</string>
+    <string name="lista_veiculo_app_bar">Veículos</string>
+    <string name="form_veiculo_ano_modelo">Ano do Modelo</string>
+    <string name="form_veiculo_marca">Marca</string>
+    <string name="form_veiculo_modelo">Modelo</string>
+    <string name="form_veiculo_ano_fabricacao">Ano de Fabricação</string>
+    <string name="form_btSalvar">Salvar</string>
+    <string name="form_btEditar">Editar</string>
+    <string name="form_btDeletar">Deletar</string>
+    <string name="form_placa_veiculo">Placa do Veículo</string>
+    <string name="form_veiculo_apelido">Apelido(opcional)</string>
+    <string name="lista_consumo_nenhum_abastecimento">"Nenhum abastecimento encontrado clique no '+' para cadastrar"</string>
+    <string name="lista_manutecao_nenhuma_manutecao">"Nenhuma manutenção encontrada clique no '+' para cadastrar"</string>
+    <string name="item_lista_consumo_consumo">%1$s Km/L</string>
+    <string name="item_lista_consumo_data">%1$s</string>
+    <string name="item_lista_consumo_percorrido">Percorrido com %1$s</string>
+    <string name="item_lista_consumo_abastecido">Abastecido com %1$s</string>
+    <string name="form_consumo_km_anterior">Quilômetro Anterior</string>
+    <string name="form_consumo_km_atual">Quilômetro Atual</string>
+    <string name="form_consumo_litros">Litros</string>
+    <string name="form_consumo_tanque_cheio">Tanque Cheio</string>
+    <string name="data">%1$s/%2$s/%3$s</string>
+    <string name="veiculo">%1$s %2$s/%3$s</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="atencao">ATENÇÃO</string>
+    <string name="confirmar_deletar_veiculo">Tem certeza que deseja deletar este veículo? %1$s</string>
+    <string name="moeda">R$</string>
+    <string name="combustivel">Combustível: %1$s</string>
+    <string name="abastecimentos">Abastecimentos</string>
+    <string name="manutencao">Manutenção</string>
+    <string name="gastos">Gastos</string>
+    <string name="detalhes_do_veiculo">Detalhes do Veículo</string>
+    <string name="verifique_erros">Verifique Erros</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
+        history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="valor">Valor</string>
+    <string name="erro_formato_ano">Ano no formato inválido!</string>
+    <string name="preencha_campos_obrigatorios">Preencha todos os campos obrigatórios</string>
+    <string name="placa_cadastrada_mensagem">Já existe um veículo com essa placa cadastrado</string>
+    <string name="ano_modelo_invalido">Ano Modelo com formato inválido</string>
+    <string name="ano_fabricacao_invalido">Ano fabricação no formato inválido</string>
+    <string name="selecione_um_aplicativo">Selecione um aplicativo</string>
+    <string name="campo_obrigatorio">Campo obrigatório!</string>
+    <string name="erro_kmAnterior_maior_kmAtual">Km Anterior maior que Km Atual</string>
+    <string name="title_activity_gastos">GastosActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="campo_valor_manutencao_obrigatorio">Campo obrigatório quando \'Realizado\' está marcado!</string>
+    <string name="form_manutencao_data_invalida">Data lelecionada maior que data atual, por favor desmarque o campo \'Realizado\'</string>
+</resources>

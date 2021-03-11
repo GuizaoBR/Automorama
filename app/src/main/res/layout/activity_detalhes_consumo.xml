@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetalhesConsumoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/actionModeCloseDrawable">
+
+            <TextView
+                android:id="@+id/veiculoSelecionado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/textCombustivel"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Abastecido com: Gasolina Aditivada"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textConsumo"
+        app:layout_constraintTop_toBottomOf="@+id/textConsumo"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textConsumo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Consumo: 25,12Km/L com Gasolina Aditivada"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTanqueAbastecido"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textPercorrido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Percorrido: 400Km"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textCombustivel"
+        app:layout_constraintTop_toBottomOf="@+id/textCombustivel"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Data: 25/12/2019"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toEndOf="@+id/textPercorrido"
+        app:layout_constraintTop_toBottomOf="@+id/textCombustivel"
+        tools:targetApi="lollipop" />
+
+    <Button
+        android:id="@+id/btDeletar"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:background="@color/btDeletar"
+        android:foreground="@drawable/ripple_effect"
+        android:text="@string/form_btDeletar"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btEditar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btEditar"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:background="@color/btEditarSalvar"
+        android:foreground="@drawable/ripple_effect"
+        android:text="@string/form_btEditar"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btDeletar"
+        tools:targetApi="lollipop" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="209dp"
+        android:layout_height="197dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/textTanqueAbastecido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Tanque abastecido Por Completo"
+        android:textSize="17sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:text="Valor: R$ 160,00"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textPercorrido"
+        app:layout_constraintTop_toBottomOf="@+id/textPercorrido" />
+</androidx.constraintlayout.widget.ConstraintLayout>

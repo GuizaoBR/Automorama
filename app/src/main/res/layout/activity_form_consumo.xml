@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".FormConsumoActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/appBarLayout">
+
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="#640301" app:navigationIcon="?attr/actionModeCloseDrawable">
+                <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/veiculoSelecionado"
+                        android:textStyle="bold" android:textColor="#ffffff"
+                        android:textSize="20sp"/>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <EditText
+            android:id="@+id/kmAnterior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/form_consumo_km_anterior"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+        <EditText
+            android:id="@+id/kmAtual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="@string/form_consumo_km_atual"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/kmAnterior"
+            app:layout_constraintStart_toStartOf="@+id/kmAnterior"
+            app:layout_constraintTop_toBottomOf="@+id/kmAnterior" />
+        <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="27dp"
+                android:id="@+id/combustivel" android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/data"
+                app:layout_constraintEnd_toEndOf="@+id/data" app:layout_constraintStart_toStartOf="@+id/data"
+                android:spinnerMode="dropdown"/>
+
+        <EditText
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Data"
+            android:inputType="date"
+            android:selectAllOnFocus="false"
+            app:layout_constraintEnd_toEndOf="@+id/valor"
+            app:layout_constraintStart_toStartOf="@+id/valor"
+            app:layout_constraintTop_toBottomOf="@+id/valor" />
+
+        <EditText
+            android:id="@+id/valor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="@string/valor"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="false"
+            app:layout_constraintEnd_toEndOf="@+id/litros"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/litros"
+            app:layout_constraintTop_toBottomOf="@+id/litros" />
+
+        <EditText
+            android:id="@+id/litros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="@string/form_consumo_litros"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/kmAtual"
+            app:layout_constraintStart_toStartOf="@+id/kmAtual"
+            app:layout_constraintTop_toBottomOf="@+id/kmAtual" />
+
+        <Button
+                android:text="@string/form_btSalvar"
+                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:id="@+id/btSalvar"
+                android:layout_alignParentBottom="true"
+                android:background="@color/btEditarSalvar"
+            android:foreground="@drawable/ripple_effect"
+                android:overScrollMode="always"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:targetApi="lollipop"/>
+        <CheckBox
+                android:text="@string/form_consumo_tanque_cheio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkTanque" app:layout_constraintStart_toStartOf="@+id/combustivel"
+                app:layout_constraintEnd_toEndOf="@+id/combustivel" android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/combustivel" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/btSalvar" app:layout_constraintVertical_bias="0.0"
+                android:checked="false"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <Button
+                android:text="Salvar"
+                android:layout_height="44dp"
+                android:layout_width="match_parent"
+                android:id="@+id/btSalvar"
+                android:layout_alignParentBottom="true"
+                android:overScrollMode="always"/>
+    </LinearLayout>-->
+</ScrollView>

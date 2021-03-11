@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetalhesVeiculoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/actionModeCloseDrawable">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="start"
+                android:text="@string/detalhes_do_veiculo"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btAbastecimento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="#08FF0000"
+                android:backgroundTint="@color/colorAccent"
+                android:foreground="@drawable/ripple_effect"
+                android:text="@string/gastos"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <Button
+        android:id="@+id/btDeletar"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/btDeletar"
+        android:foreground="@drawable/ripple_effect"
+        android:text="@string/form_btDeletar"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btEditar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/btEditar"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/btEditarSalvar"
+        android:foreground="@drawable/ripple_effect"
+        android:text="@string/form_btEditar"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btDeletar"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="1.0"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textMarca"
+        android:layout_width="157dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="20dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Marca: Chevrolet"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textModelo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textModelo"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Modelo: Onix Joy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textMarca"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textMarca"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textAnoFabricacaoModelo"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Ano Fabricação/Modelo: 2018/2018"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textMarca"
+        app:layout_constraintTop_toBottomOf="@+id/textMarca"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textPlaca"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="96dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Placa: GFZ-5388"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/textApelido"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textAnoFabricacaoModelo"
+        app:layout_constraintVertical_bias="0.0"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textApelido"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="20sp"
+        android:shadowColor="#fff"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Apelido: Meu Carro"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textPlaca"
+        app:layout_constraintTop_toBottomOf="@+id/textAnoFabricacaoModelo"
+        app:layout_constraintVertical_bias="0.0"
+        tools:targetApi="lollipop" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="395dp" />
+
+    <ImageView
+        android:id="@+id/imageVeiculo"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
+        app:srcCompat="@drawable/ic_car_list" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="320dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="591dp" />
+
+    <TextView
+        android:id="@+id/textConsumoMedio"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Consumo Médio: 12.5Km/L"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/imageVeiculo"
+        app:layout_constraintStart_toStartOf="@+id/imageVeiculo"
+        app:layout_constraintTop_toBottomOf="@+id/imageVeiculo"
+        app:layout_constraintVertical_bias="0.52" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="109dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textConsumoMedio"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/imageVeiculo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

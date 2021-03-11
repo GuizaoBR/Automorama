@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#008577</color>
+  <color name="colorPrimaryDark">#00574B</color>
+  <color name="colorAccent">#5f0500</color>
+  <color name="primary_material_dark">#640300</color>
+  <color name="accent_material_dark">#c90700</color>
+  <color name="btDeletar">#e40000</color>
+  <color name="btEditarSalvar">#001E5A</color>
+</resources>

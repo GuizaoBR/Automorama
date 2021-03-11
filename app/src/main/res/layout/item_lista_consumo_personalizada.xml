@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
+
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@mipmap/ic_launcher_foreground"
+            android:id="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:text="@string/item_lista_consumo_consumo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textConsumoLista" app:layout_constraintStart_toEndOf="@+id/imageView"
+            android:layout_marginStart="12dp" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"/>
+    <TextView
+            android:text="@string/item_lista_consumo_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textDataLista"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold|italic"/>
+    <TextView
+            android:text="@string/item_lista_consumo_percorrido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textPercorridoLista"
+            app:layout_constraintStart_toStartOf="@+id/textAbastecidoLista"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textAbastecidoLista"
+            android:textStyle="bold" android:visibility="invisible"/>
+    <TextView
+            android:text="@string/item_lista_consumo_abastecido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textAbastecidoLista"
+            app:layout_constraintStart_toStartOf="@+id/textConsumoLista"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textConsumoLista"
+            android:textStyle="bold"/>
+    <ImageView
+            android:layout_width="43dp"
+            android:layout_height="35dp" app:srcCompat="@drawable/ic_tanque_cheio"
+            android:id="@+id/imageTanqueCheio" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textPercorridoLista"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

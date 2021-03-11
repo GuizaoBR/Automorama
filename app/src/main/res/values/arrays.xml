@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Combustiveis">
+        <item>Gasolina Comum</item>
+        <item>Gasolina Aditivada</item>
+        <item>Eatanol</item>
+        <item>Diesel</item>
+    </string-array>
+</resources>
