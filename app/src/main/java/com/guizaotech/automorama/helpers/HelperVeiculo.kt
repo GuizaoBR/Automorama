@@ -20,11 +20,11 @@ class HelperVeiculo(activity: FormVeiculoActivity) {
     private val campoPlaca : EditText = activity.findViewById(R.id.placa) as EditText
     private val campoApelido : EditText = activity.findViewById(R.id.apelido) as EditText
     private val campoImagem : ImageView = activity.findViewById(R.id.imageVeiculo) as ImageView
-    private var veiculo : Veiculo = Veiculo()
+    //private var veiculo : Veiculo = Veiculo()
     private val context = activity.applicationContext
 
 
-    fun getVeiculo(): Veiculo{
+    fun getVeiculo(veiculo: Veiculo): Veiculo{
         veiculo.marca = campoMarca.text.toString()
         veiculo.modelo = campoModelo.text.toString()
         if (campoAnoFabricacao.text.toString() != ""){
@@ -61,7 +61,7 @@ class HelperVeiculo(activity: FormVeiculoActivity) {
         if (campoImagem.tag == ""){
             carregaImagem(veiculo.caminhoImagem)
         }
-        this.veiculo = veiculo
+        //this.veiculo = veiculo
     }
 
 
@@ -96,18 +96,7 @@ class HelperVeiculo(activity: FormVeiculoActivity) {
             }
         })
     }
-    private fun verificaPlaca(listaVeiculo: MutableList<Veiculo>): Boolean {
-        //val daoVeiculo = AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO()
-        var ok = true
-        for (placa in listaVeiculo) {
-            if (placa.placa == campoPlaca.text.toString()) {
-                ok = false
-                break
-            }
-        }
 
-        return ok
-    }
 
     private fun temCamposVazios() =
         campoAnoFabricacao.text.toString() == "" || campoAnoModelo.text.toString() == "" ||
@@ -117,17 +106,17 @@ class HelperVeiculo(activity: FormVeiculoActivity) {
     private fun dataEhValida(data: String) =
         data.length == 4
 
-    fun ehValido(listaVeiculo: MutableList<Veiculo>) : Boolean {
+    fun ehValido() : Boolean {
         var ehValido: Boolean = true
         if(temCamposVazios()) {
             ehValido = false
         } else {
-            if (!verificaPlaca(listaVeiculo)) {
-                campoPlaca.error = context.getString(R.string.placa_cadastrada_mensagem)
-                ehValido = false
-            } else {
-                campoPlaca.error = null
-            }
+//            if (!verificaPlaca(listaVeiculo)) {
+//                campoPlaca.error = context.getString(R.string.placa_cadastrada_mensagem)
+//                ehValido = false
+//            } else {
+//                campoPlaca.error = null
+//            }
             if(!dataEhValida(campoAnoModelo.text.toString())){
                 campoAnoModelo.error = context.getString(R.string.ano_modelo_invalido)
                 ehValido = false

@@ -32,7 +32,6 @@ class ListaConsumoActivity : AppCompatActivity(), Codigos_Activity {
             finish()
         }
 
-
         consumoDAO = AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
         preencheDados()
 

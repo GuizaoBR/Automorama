@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.guizaotech.automorama.asyncTask.AdicionaVeiculoTask
 import com.guizaotech.automorama.asyncTask.CarregaListaVeiculoTask
 import com.guizaotech.automorama.asyncTask.EditaVeiculoTask
@@ -25,6 +27,11 @@ import com.guizaotech.automorama.helpers.CarregaImagem
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.helpers.HelperVeiculo
 import com.guizaotech.automorama.modelo.Veiculo
+import com.guizaotech.automorama.repository.VeiculosRepository
+import com.guizaotech.automorama.viewModel.FormVeiculosViewModel
+import com.guizaotech.automorama.viewModel.ListaVeiculosViewModel
+import com.guizaotech.automorama.viewModel.factory.FormVeiculosViewModelFactory
+import com.guizaotech.automorama.viewModel.factory.ListaVeiculosViewModelFactory
 import kotlinx.android.synthetic.main.activity_form_veiculo.*
 import java.io.File
 
@@ -35,8 +42,13 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
     private val codigoCamera = 1
     private val codigoGaleria = 2
     private val codigoPermissaoMemoria = 3
-    private var daoVeiculo: RoomVeiculoDao? = null
-    private var listaVeiculo: MutableList<Veiculo>? = null
+
+    private val viewModel by lazy {
+        val repository = VeiculosRepository(AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO())
+        val factory = FormVeiculosViewModelFactory(repository)
+        val provedor = ViewModelProviders.of(this, factory)
+        provedor.get(FormVeiculosViewModel::class.java)
+    }
 
 
     @SuppressLint("RestrictedApi")
@@ -48,14 +60,10 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
             finish()
         }
 
-        daoVeiculo = AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO()
-
-
         val helper = HelperVeiculo(this)
 
-
         val intent = intent
-        val veiculo = intent.getSerializableExtra("editarVeiculo")
+        var veiculo = intent.getSerializableExtra("editarVeiculo")
         val veiculoPosicao = intent.getIntExtra("veiculoPosicao", -1)
 
         if (savedInstanceState != null) {
@@ -63,10 +71,13 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         }
 
         if (veiculo != null) {
-            helper.preencheVeiculo(veiculo as Veiculo)
+            veiculo = veiculo as Veiculo
+            helper.preencheVeiculo(veiculo)
             if (veiculo.caminhoImagem != "") {
                 floatRemover.visibility = View.VISIBLE
             }
+        } else {
+            veiculo = Veiculo()
         }
 
         floatRemover.setOnClickListener {
@@ -82,44 +93,60 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         registerForContextMenu(floatCamera)
 
         btSalvar.setOnClickListener {
-            val veiculoNovo: Veiculo = helper.getVeiculo()
-            val ehValido= helper.ehValido(listaVeiculo!!)
-            if(ehValido){
-                when {
-                    veiculoNovo.idVeiculo != 0L -> {
-                        btSalvar.isClickable = false
-                        EditaVeiculoTask(daoVeiculo!!, veiculoNovo,
-                            object : EditaVeiculoTask.QuandoFinalizado {
-                                override fun finaliza() {
-                                    enviaDados(veiculoNovo, veiculoPosicao)
-                                    finish()
-                                }
-                            }).execute()
-                        btSalvar.isClickable = true
+            val ehValido = helper.ehValido()
+            if (ehValido){
+                val veiculoNovo: Veiculo = helper.getVeiculo(veiculo = veiculo!!)
+                viewModel.salva(veiculo = veiculoNovo).observe( this, Observer {
+                    if (it.erro == null){
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this,
+                            it.erro,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    else -> {
-                        btSalvar.isClickable = false
-                        if (listaVeiculo!!.size > 0) {
-                            veiculoNovo.idVeiculo = listaVeiculo!!.last().idVeiculo + 1
-                        }
-                        AdicionaVeiculoTask(daoVeiculo!!, veiculoNovo,
-                            object : AdicionaVeiculoTask.FinalizadaListener {
-                                override fun quandoFinalizada() {
-                                    enviaDados(veiculoNovo)
-                                    finish()
-                                }
-                            }).execute()
-                        btSalvar.isClickable = true
-                    }
-                }
+                })
             }
-            else {
-                Toast.makeText(
-               this,
-                getString(R.string.verifique_erros),
-               Toast.LENGTH_SHORT
-           ).show()
-            }
+
+//            val veiculoNovo: Veiculo = helper.getVeiculo()
+//            val ehValido= helper.ehValido(listaVeiculo!!)
+//            if(ehValido){
+//                when {
+//                    veiculoNovo.idVeiculo != 0L -> {
+//                        btSalvar.isClickable = false
+//                        EditaVeiculoTask(daoVeiculo!!, veiculoNovo,
+//                            object : EditaVeiculoTask.QuandoFinalizado {
+//                                override fun finaliza() {
+//                                    enviaDados(veiculoNovo, veiculoPosicao)
+//                                    finish()
+//                                }
+//                            }).execute()
+//                        btSalvar.isClickable = true
+//                    }
+//                    else -> {
+//                        btSalvar.isClickable = false
+//                        if (listaVeiculo!!.size > 0) {
+//                            veiculoNovo.idVeiculo = listaVeiculo!!.last().idVeiculo + 1
+//                        }
+//                        AdicionaVeiculoTask(daoVeiculo!!, veiculoNovo,
+//                            object : AdicionaVeiculoTask.FinalizadaListener {
+//                                override fun quandoFinalizada() {
+//                                    enviaDados(veiculoNovo)
+//                                    finish()
+//                                }
+//                            }).execute()
+//                        btSalvar.isClickable = true
+//                    }
+//                }
+//            }
+//            else {
+//                Toast.makeText(
+//               this,
+//                getString(R.string.verifique_erros),
+//               Toast.LENGTH_SHORT
+//           ).show()
+//            }
         }
     }
 
