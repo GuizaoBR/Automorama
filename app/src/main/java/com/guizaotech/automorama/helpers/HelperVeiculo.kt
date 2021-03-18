@@ -111,12 +111,7 @@ class HelperVeiculo(activity: FormVeiculoActivity) {
         if(temCamposVazios()) {
             ehValido = false
         } else {
-//            if (!verificaPlaca(listaVeiculo)) {
-//                campoPlaca.error = context.getString(R.string.placa_cadastrada_mensagem)
-//                ehValido = false
-//            } else {
-//                campoPlaca.error = null
-//            }
+
             if(!dataEhValida(campoAnoModelo.text.toString())){
                 campoAnoModelo.error = context.getString(R.string.ano_modelo_invalido)
                 ehValido = false
