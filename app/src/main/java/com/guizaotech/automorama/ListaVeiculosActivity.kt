@@ -3,18 +3,14 @@ package com.guizaotech.automorama
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.guizaotech.automorama.asyncTask.CarregaListaVeiculoTask
 import com.guizaotech.automorama.custom.ListaVeiculoRecyclerViewAdapter
 import com.guizaotech.automorama.custom.OnItemClickListener
 import com.guizaotech.automorama.database.AutomoramaDatabase
-import com.guizaotech.automorama.database.RoomVeiculoDao
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Veiculo
 import com.guizaotech.automorama.repository.VeiculosRepository
@@ -33,7 +29,9 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
     }
 
     private val viewModel by lazy {
-        val repository = VeiculosRepository(AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO())
+        val repository = VeiculosRepository(
+            AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO()
+        )
         val factory = ListaVeiculosViewModelFactory(repository)
         val provedor = ViewModelProviders.of(this, factory)
         provedor.get(ListaVeiculosViewModel::class.java)
@@ -69,7 +67,7 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
         configuraListaLayoutManager()
     }
     private fun buscaLista() {
-        viewModel.buscaTodos().observe(this, Observer { resource ->
+        viewModel.listaVeiculos.observe(this, Observer { resource ->
             resource?.let {
                 adapter.atualiza(it)
                 listaVeiculo = it.toMutableList()
@@ -90,7 +88,6 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
         adapter.onItemClickListener = object : OnItemClickListener {
             override fun onItemClick(item: Any, posicao: Int) {
                 val detalhes = Intent(this@ListaVeiculosActivity, DetalhesVeiculoActivity::class.java)
-                detalhes.putExtra("veiculoDetalhes", posicao)
                 detalhes.putExtra("veiculo", item as Veiculo)
                 startActivityForResult(detalhes, CODIGO_DETALHES)
 
