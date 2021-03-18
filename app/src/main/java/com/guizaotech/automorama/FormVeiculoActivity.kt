@@ -18,22 +18,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.guizaotech.automorama.asyncTask.AdicionaVeiculoTask
-import com.guizaotech.automorama.asyncTask.CarregaListaVeiculoTask
-import com.guizaotech.automorama.asyncTask.EditaVeiculoTask
 import com.guizaotech.automorama.database.AutomoramaDatabase
-import com.guizaotech.automorama.database.RoomVeiculoDao
 import com.guizaotech.automorama.helpers.CarregaImagem
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.helpers.HelperVeiculo
 import com.guizaotech.automorama.modelo.Veiculo
 import com.guizaotech.automorama.repository.VeiculosRepository
 import com.guizaotech.automorama.viewModel.FormVeiculosViewModel
-import com.guizaotech.automorama.viewModel.ListaVeiculosViewModel
 import com.guizaotech.automorama.viewModel.factory.FormVeiculosViewModelFactory
-import com.guizaotech.automorama.viewModel.factory.ListaVeiculosViewModelFactory
 import kotlinx.android.synthetic.main.activity_form_veiculo.*
+import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.io.Serializable
 
 
 class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
@@ -64,7 +60,7 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
 
         val intent = intent
         var veiculo = intent.getSerializableExtra("editarVeiculo")
-        val veiculoPosicao = intent.getIntExtra("veiculoPosicao", -1)
+        //val veiculoPosicao = intent.getIntExtra("veiculoPosicao", -1)
 
         if (savedInstanceState != null) {
             configuraImagem(savedInstanceState)
@@ -93,61 +89,35 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         registerForContextMenu(floatCamera)
 
         btSalvar.setOnClickListener {
+            btSalvar.isClickable = false
             val ehValido = helper.ehValido()
             if (ehValido){
-                val veiculoNovo: Veiculo = helper.getVeiculo(veiculo = veiculo!!)
-                viewModel.salva(veiculo = veiculoNovo).observe( this, Observer {
-                    if (it.erro == null){
-                        finish()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            it.erro,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+                runBlocking {
+                    salva(helper, veiculo)
+                }
             }
 
-//            val veiculoNovo: Veiculo = helper.getVeiculo()
-//            val ehValido= helper.ehValido(listaVeiculo!!)
-//            if(ehValido){
-//                when {
-//                    veiculoNovo.idVeiculo != 0L -> {
-//                        btSalvar.isClickable = false
-//                        EditaVeiculoTask(daoVeiculo!!, veiculoNovo,
-//                            object : EditaVeiculoTask.QuandoFinalizado {
-//                                override fun finaliza() {
-//                                    enviaDados(veiculoNovo, veiculoPosicao)
-//                                    finish()
-//                                }
-//                            }).execute()
-//                        btSalvar.isClickable = true
-//                    }
-//                    else -> {
-//                        btSalvar.isClickable = false
-//                        if (listaVeiculo!!.size > 0) {
-//                            veiculoNovo.idVeiculo = listaVeiculo!!.last().idVeiculo + 1
-//                        }
-//                        AdicionaVeiculoTask(daoVeiculo!!, veiculoNovo,
-//                            object : AdicionaVeiculoTask.FinalizadaListener {
-//                                override fun quandoFinalizada() {
-//                                    enviaDados(veiculoNovo)
-//                                    finish()
-//                                }
-//                            }).execute()
-//                        btSalvar.isClickable = true
-//                    }
-//                }
-//            }
-//            else {
-//                Toast.makeText(
-//               this,
-//                getString(R.string.verifique_erros),
-//               Toast.LENGTH_SHORT
-//           ).show()
-//            }
         }
+    }
+
+    private suspend fun salva(
+        helper: HelperVeiculo,
+        veiculo: Serializable?,
+    ) {
+        val veiculoNovo: Veiculo = helper.getVeiculo(veiculo = veiculo as Veiculo)
+        viewModel.salva(veiculo = veiculoNovo).observe(this, Observer {
+            if (it.erro == null) {
+                //enviaDados(veiculoNovo = veiculo, veiculoPosicao = veiculoPosicao)
+                finish()
+            } else {
+                Toast.makeText(
+                    this,
+                    it.erro,
+                    Toast.LENGTH_SHORT
+                ).show()
+                btSalvar.isClickable = true
+            }
+        })
     }
 
 
