@@ -12,7 +12,7 @@ interface RoomVeiculoDao {
     fun salva(veiculo: Veiculo)
 
     @Query("SELECT * FROM Veiculo")
-    fun todos(): Flow<List<Veiculo>>
+    fun todos(): List<Veiculo>
 
     @Delete
     fun remove(veiculo: Veiculo)

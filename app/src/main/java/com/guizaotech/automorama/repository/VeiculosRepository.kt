@@ -4,43 +4,69 @@ import androidx.lifecycle.*
 import com.guizaotech.automorama.database.RoomVeiculoDao
 import com.guizaotech.automorama.modelo.Resource
 import com.guizaotech.automorama.modelo.Veiculo
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import kotlin.Exception
+import kotlinx.coroutines.flow.collect
 
 class VeiculosRepository(private val dao: RoomVeiculoDao) {
 
+    private val listaVeiculos = MutableLiveData<Resource<List<Veiculo>?>>()
 
-    fun buscaVeiculos(): Flow<List<Veiculo>> {
-        return dao.todos()
+    fun buscaVeiculos(): LiveData<Resource<List<Veiculo>?>> {
+        runBlocking {
+            val task = CoroutineScope(IO).launch {
+                listaVeiculos.postValue(Resource(dado = dao.todos()))
+            }
+            task.join()
+        }
+        return listaVeiculos
     }
 
-    //   fun placaExiste(placa : String, idVeiculo: Long) : Boolean{
-//       val  task = CoroutineScope(IO).launch {
-//           existe = dao.placaExiste(placa = placa,  idVeiculo = idVeiculo)
-//       }.start()
-//
-//       return task
-//
-//    }
-    suspend fun salva(veiculo: Veiculo): LiveData<Resource<Void?>> {
-        val liveData = MutableLiveData<Resource<Void?>>()
+    suspend fun salva(veiculo: Veiculo): LiveData<Resource<Veiculo>> {
+        val liveData = MutableLiveData<Resource<Veiculo>>()
         return try {
-            processa(veiculo)
+            salvaInterno(veiculo)
+            liveData.value = Resource(dado = veiculo)
+            liveData
+        } catch (e: Exception) {
+            liveData.value = Resource(dado = veiculo, erro = e.message)
+            liveData
+        }
+
+    }
+
+    suspend fun deleta(veiculo: Veiculo): LiveData<Resource<Void?>>{
+        val liveData= MutableLiveData<Resource<Void?>>()
+        return try {
+            deletaInterno(veiculo)
             liveData.value = Resource(dado = null)
             liveData
         } catch (e: Exception) {
             liveData.value = Resource(dado = null, erro = e.message)
             liveData
         }
-
-
     }
 
-    suspend fun processa(veiculo: Veiculo) {
+    private suspend fun deletaInterno(veiculo: Veiculo) {
+        var errorMessage: String = ""
+        val coroutineScope = CoroutineScope(IO)
+        val task = coroutineScope.launch {
+            try {
+                dao.remove(veiculo = veiculo)
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+                cancel()
+            }
+        }
+        task.join()
+        if (task.isCancelled) {
+            throw Exception(errorMessage)
+        }
+    }
+
+    suspend fun salvaInterno(veiculo: Veiculo) {
         val coroutineScope = CoroutineScope(IO)
         var errorMessage: String? = null
         val task = coroutineScope.launch {

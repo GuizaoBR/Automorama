@@ -107,7 +107,6 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         val veiculoNovo: Veiculo = helper.getVeiculo(veiculo = veiculo as Veiculo)
         viewModel.salva(veiculo = veiculoNovo).observe(this, Observer {
             if (it.erro == null) {
-                //enviaDados(veiculoNovo = veiculo, veiculoPosicao = veiculoPosicao)
                 finish()
             } else {
                 Toast.makeText(
@@ -118,20 +117,6 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
                 btSalvar.isClickable = true
             }
         })
-    }
-
-
-    private fun enviaDados(veiculoNovo: Veiculo, veiculoPosicao: Int) {
-        val resultadoOK = Intent()
-        resultadoOK.putExtra("veiculo", veiculoNovo)
-        resultadoOK.putExtra("veiculoPosicao", veiculoPosicao)
-        setResult(Activity.RESULT_OK, resultadoOK)
-    }
-
-    private fun enviaDados(veiculoNovo: Veiculo) {
-        val resultadoOk = Intent()
-        resultadoOk.putExtra("veiculo", veiculoNovo)
-        setResult(Activity.RESULT_OK, resultadoOk)
     }
 
     @SuppressLint("RestrictedApi")

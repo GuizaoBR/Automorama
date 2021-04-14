@@ -12,12 +12,12 @@ import com.guizaotech.automorama.modelo.Veiculo
 import com.guizaotech.automorama.repository.VeiculosRepository
 import kotlinx.android.synthetic.main.activity_form_veiculo.*
 
-class FormVeiculosViewModel(
+class DetalhesVeiculosViewModel(
     private val repository: VeiculosRepository
 ): ViewModel() {
 
-    suspend fun salva(veiculo: Veiculo): LiveData<Resource<Veiculo>> {
-        return repository.salva(veiculo = veiculo)
+    suspend fun deleta(veiculo: Veiculo): LiveData<Resource<Void?>> {
+        return repository.deleta(veiculo = veiculo)
     }
 
 

@@ -6,8 +6,11 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.guizaotech.automorama.asyncTask.CarregaImagemDetalhesTask
 import com.guizaotech.automorama.asyncTask.DeletarVeiculoTask
 import com.guizaotech.automorama.asyncTask.mediaConsumoTask
@@ -16,13 +19,26 @@ import com.guizaotech.automorama.database.RoomConsumoDao
 import com.guizaotech.automorama.database.RoomVeiculoDao
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Veiculo
+import com.guizaotech.automorama.repository.VeiculosRepository
+import com.guizaotech.automorama.viewModel.DetalhesVeiculosViewModel
+import com.guizaotech.automorama.viewModel.FormVeiculosViewModel
+import com.guizaotech.automorama.viewModel.factory.DetalhesVeiculosViewModelFactory
+import com.guizaotech.automorama.viewModel.factory.FormVeiculosViewModelFactory
 import kotlinx.android.synthetic.main.activity_detalhes_veiculo.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 
 class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
     var veiculoPosicao: Int? = null
     var consumoDAO: RoomConsumoDao? = null
-    var veiculoDAO: RoomVeiculoDao? = null
     var veiculoSelecionado: Veiculo? = null
+
+    private val viewModel by lazy {
+        val repository = VeiculosRepository(AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO())
+        val factory = DetalhesVeiculosViewModelFactory(repository)
+        val provedor = ViewModelProviders.of(this, factory)
+        provedor.get(DetalhesVeiculosViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +50,6 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
             finish()
         }
         consumoDAO = AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
-        veiculoDAO = AutomoramaDatabase.getInstance(this).getRoomVeiculoDAO()
 
         veiculoSelecionado = preencheDetalhes(false)
 
@@ -48,18 +63,10 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
 
 
         btDeletar.setOnClickListener {
-            //efeito
-           /* val btWidth = btDeletar.width/2
-            val btHeight = btDeletar.height/2
-
-            val finalRadius = Math.hypot(btWidth.toDouble(), btHeight.toDouble()).toFloat()
-            val anim = ViewAnimationUtils.createCircularReveal(btDeletar, btWidth, btHeight, 0f, finalRadius)
-            anim.start()*/
             confimarDeletar(veiculoSelecionado!!)
         }
 
         btEditarClick()
-
     }
 
     private fun btEditarClick() {
@@ -81,15 +88,10 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         )
 
         builder.setPositiveButton(resources.getString(R.string.sim)) { dialog, which ->
-            val intentOk = Intent()
-            DeletarVeiculoTask(veiculoDAO!!, veiculoSelecionado,
-                object : DeletarVeiculoTask.FinalizaListener{
-                    override fun finaliza() {
-                        intentOk.putExtra("veiculo", veiculoSelecionado)
-                        intentOk.putExtra("posicao", veiculoPosicao)
-                        setResult(Activity.RESULT_OK, intentOk)
-                        finish()                    }
-                }).execute()
+            runBlocking {
+                deleta(veiculoSelecionado)
+            }
+
         }
         builder.setNegativeButton(resources.getString(R.string.nao)) { dialog, which ->
             dialog.cancel()
@@ -97,6 +99,21 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private suspend fun deleta(veiculoSelecionado: Veiculo) {
+        viewModel.deleta(veiculo = veiculoSelecionado).observe(this, Observer {
+            if (it.erro == null) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            } else {
+                Toast.makeText(
+                    this,
+                    it.erro,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun preencheDetalhes(ehResume: Boolean): Veiculo {
@@ -168,21 +185,5 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
                 }
             }).execute()
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (requestCode == CODIGO_ALTERA && resultCode == Activity.RESULT_OK && data!!.hasExtra("veiculo") && data.hasExtra("veiculoPosicao")){
-            val alteraHome = Intent()
-            veiculoSelecionado = data.getSerializableExtra("veiculo") as Veiculo
-            enviaDados(alteraHome, veiculoSelecionado!!)
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun enviaDados(alteraHome: Intent, veiculoRecebido: Veiculo) {
-        alteraHome.putExtra("veiculoAlterado", veiculoRecebido)
-        alteraHome.putExtra("veiculoPosicao", veiculoPosicao)
-        setResult(Activity.RESULT_OK, alteraHome)
     }
 }

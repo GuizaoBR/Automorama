@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.guizaotech.automorama.viewModel.ListaVeiculosViewModel
 import com.guizaotech.automorama.viewModel.factory.ListaVeiculosViewModelFactory
 import kotlinx.android.synthetic.main.activity_lista_veiculos.*
 import kotlinx.android.synthetic.main.content_lista_veiculos.*
+import kotlinx.coroutines.runBlocking
 
 
 class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
@@ -50,6 +52,11 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
         registerForContextMenu(lista_veiculos_view)
     }
 
+    override fun onResume() {
+        super.onResume()
+        buscaLista()
+    }
+
 
     private fun verificaTamanhoLista() {
 
@@ -67,15 +74,18 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
         configuraListaLayoutManager()
     }
     private fun buscaLista() {
-        viewModel.listaVeiculos.observe(this, Observer { resource ->
-            resource?.let {
+        buscaViewModel()
+    }
+
+    private  fun buscaViewModel() {
+        viewModel.buscaTodos().observe(this, Observer { resource ->
+            resource.dado?.let {
                 adapter.atualiza(it)
                 listaVeiculo = it.toMutableList()
             }
             verificaTamanhoLista()
         })
     }
-
 
 
     private fun configuraListaLayoutManager() {
@@ -94,29 +104,4 @@ class ListaVeiculosActivity : AppCompatActivity(), Codigos_Activity {
             }
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CODIGO_INSERE && resultCode == Activity.RESULT_OK && data!!.hasExtra("veiculo")){
-            val veiculoRecebido = data.getSerializableExtra("veiculo") as Veiculo
-            adapter.adiciona(veiculoRecebido)
-            Toast.makeText(this, "Salvo", Toast.LENGTH_SHORT).show()
-        }
-        if (requestCode == CODIGO_DETALHES && resultCode == Activity.RESULT_OK && data!!.hasExtra("posicao")){
-            val veiculoRecebido = data.getSerializableExtra("veiculo") as Veiculo
-            val posicao = data.getIntExtra("posicao", -1)
-            adapter.remove(posicao)
-
-            Toast.makeText(this@ListaVeiculosActivity, "$veiculoRecebido deletado", Toast.LENGTH_SHORT).show()
-        }
-
-        if (requestCode == CODIGO_DETALHES && resultCode == Activity.RESULT_OK && data!!.hasExtra("veiculoAlterado") && data.hasExtra("veiculoPosicao")){
-            val veiculoRecebido = data.getSerializableExtra("veiculoAlterado") as Veiculo
-            val posicao = data.getIntExtra("veiculoPosicao", -CODIGO_INSERE)
-            adapter.altera(veiculoRecebido, posicao)
-
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-
-    }
-
 }
