@@ -13,7 +13,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 class ListaConsumoRecyclerView(
-    private var listaConsumo: MutableList<Consumo>,
+    private var listaConsumo: MutableList<Consumo> = mutableListOf(),
     private val context: Context
 ): RecyclerView.Adapter<ListaConsumoRecyclerView.ConsumoViewHolder>() {
 
@@ -51,6 +51,12 @@ class ListaConsumoRecyclerView(
 
     }
 
+    fun atualiza(consumos: List<Consumo>) {
+        notifyItemRangeRemoved(0, this.listaConsumo.size)
+        this.listaConsumo.clear()
+        this.listaConsumo.addAll(consumos)
+        notifyItemRangeInserted(0, this.listaConsumo.size)
+    }
 
     inner class ConsumoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 

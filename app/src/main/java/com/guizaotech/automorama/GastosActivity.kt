@@ -2,18 +2,24 @@ package com.guizaotech.automorama
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import com.guizaotech.automorama.database.AutomoramaDatabase
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Veiculo
+import com.guizaotech.automorama.repository.GastosRepository
 import com.guizaotech.automorama.ui.main.SectionsPagerAdapter
+import com.guizaotech.automorama.viewModel.ConsumoViewModel
+import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.activity_detalhes_consumo.toolbar
 import kotlinx.android.synthetic.main.activity_gastos.*
 
 class GastosActivity : AppCompatActivity(), Codigos_Activity {
     private var veiculo: Veiculo? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +34,7 @@ class GastosActivity : AppCompatActivity(), Codigos_Activity {
         val tabs: TabLayout = findViewById(R.id.tabs)
 
         val parametros = intent.extras
-        veiculo = parametros.getSerializable("veiculo") as Veiculo
+        veiculo = parametros?.getSerializable("veiculo") as Veiculo
 
         val veiculoSelecionado = textVeiculoTitulo
         if (veiculo!!.apelido == "") {
@@ -40,6 +46,7 @@ class GastosActivity : AppCompatActivity(), Codigos_Activity {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
                     0 -> {
+
                         fab.setOnClickListener {
                             val paginaConsumo = Intent(this@GastosActivity, FormConsumoActivity::class.java)
                             paginaConsumo.putExtra("veiculo", veiculo)

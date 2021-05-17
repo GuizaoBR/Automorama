@@ -26,21 +26,9 @@ class SectionsPagerAdapter(private val activity: Context,  fm: FragmentManager )
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                /*activity.fab.setOnClickListener {
-                    val paginaConsumo = Intent(activity, FormConsumoActivity::class.java)
-                    paginaConsumo.putExtra("veiculo", veiculo)
-                    startActivityForResult(activity, paginaConsumo, CODIGO_INSERE, null)
-                }*/
                 ConsumoFragment()
-
             }
             else ->{
-                /*activity.fab.setOnClickListener{
-                    val paginaManutencao = Intent(activity, FormManutencaoActivity::class.java)
-                    val dadosVeiculo =if(veiculo!!.apelido != "") "${veiculo!!.apelido}|${veiculo!!.idVeiculo}" else "${veiculo!!.modelo} ${veiculo!!.anoFabricacao}/${veiculo!!.anoModelo}|${veiculo!!.idVeiculo}"
-                    paginaManutencao.putExtra("veiculo", dadosVeiculo)
-                    startActivityForResult(activity, paginaManutencao, CODIGO_INSERE, null)
-                }*/
                 ManutencaoFragment()
             }
 

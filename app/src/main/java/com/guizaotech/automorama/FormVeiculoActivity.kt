@@ -139,9 +139,11 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.putString("imagem", caminhoFoto!!)
+        outState.putString("imagem", caminhoFoto!!)
     }
 
     @SuppressLint("RestrictedApi")
@@ -196,6 +198,7 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
 
     @SuppressLint("RestrictedApi")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         val helper = HelperVeiculo(this)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == codigoCamera) {
@@ -203,7 +206,7 @@ class FormVeiculoActivity : AppCompatActivity(), Codigos_Activity {
 
 
             } else if (requestCode == codigoGaleria) {
-                caminhoFoto = getImagePath(data!!.data)
+                caminhoFoto = getImagePath(data?.data!!)
                 helper.carregaImagem(caminhoFoto)
 
             }

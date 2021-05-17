@@ -119,8 +119,8 @@ class DetalhesVeiculoActivity : AppCompatActivity(), Codigos_Activity {
     private fun preencheDetalhes(ehResume: Boolean): Veiculo {
         if(!ehResume){
             val parametros = intent.extras
-            veiculoPosicao = parametros.getInt("veiculoDetalhes")
-            veiculoSelecionado = parametros.getSerializable("veiculo") as Veiculo
+            veiculoPosicao = parametros?.getInt("veiculoDetalhes")
+            veiculoSelecionado = parametros?.getSerializable("veiculo") as Veiculo
         }
         textMarca!!.text = resources.getString(R.string.detalhes_marca, veiculoSelecionado!!.marca)
         textModelo!!.text = resources.getString(R.string.detalhes_modelo, veiculoSelecionado!!.modelo)

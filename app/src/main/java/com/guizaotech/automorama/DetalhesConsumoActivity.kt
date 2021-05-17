@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.guizaotech.automorama.asyncTask.CarregaListaConsumoTask
 import com.guizaotech.automorama.asyncTask.DeletaConsumoTask
 import com.guizaotech.automorama.database.AutomoramaDatabase
 import com.guizaotech.automorama.database.RoomConsumoDao
@@ -55,25 +54,25 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
         val parametros = intent.extras
         val veiculo = veiculo(parametros)
 
-        posicaoConsumo = parametros.getInt("posicaoConsumo")
+        posicaoConsumo = parametros?.getInt("posicaoConsumo")
 
         textCombustivel.text = resources.getString(R.string.combustivel, consumo!!.combustivel)
 
-        CarregaListaConsumoTask(consumoDAO!!, veiculo.idVeiculo!!,
-            object :CarregaListaConsumoTask.CarregadoListener{
-                override fun carregado(lista: MutableList<Consumo>) {
-                    listaConsumo = lista
-                    val df = DecimalFormat("#.##")
-                    df.roundingMode = RoundingMode.CEILING
-                    if (posicaoConsumo!! > 0) {
-                        textConsumo.text =
-                            "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L com ${lista[posicaoConsumo!! - 1].combustivel}"
-                    } else {
-                        textConsumo.text = "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L"
-
-                    }
-                }
-            }).execute()
+//        CarregaListaConsumoTask(consumoDAO!!, veiculo.idVeiculo!!,
+//            object :CarregaListaConsumoTask.CarregadoListener{
+//                override fun carregado(lista: MutableList<Consumo>) {
+//                    listaConsumo = lista
+//                    val df = DecimalFormat("#.##")
+//                    df.roundingMode = RoundingMode.CEILING
+//                    if (posicaoConsumo!! > 0) {
+//                        textConsumo.text =
+//                            "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L com ${lista[posicaoConsumo!! - 1].combustivel}"
+//                    } else {
+//                        textConsumo.text = "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L"
+//
+//                    }
+//                }
+//            }).execute()
 
 
 
@@ -147,7 +146,7 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
         val parametros = intent.extras
         val veiculo = veiculo(parametros)
 
-        consumo = parametros.getSerializable("consumo") as Consumo
+        consumo = parametros?.getSerializable("consumo") as Consumo
         posicaoConsumo = parametros.getInt("posicaoConsumo", -1)
 
         //val detalhesConsumo = daoConsumo.pegarConsumo(idConsumo)
@@ -157,22 +156,22 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
         //val daoConsumo = AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
         //val listaConsumo = daoConsumo.todos(veiculo.idVeiculo)
 
-        CarregaListaConsumoTask(consumoDAO!!, veiculo.idVeiculo!!,
-            object :CarregaListaConsumoTask.CarregadoListener{
-                override fun carregado(lista: MutableList<Consumo>) {
-                    listaConsumo = lista
-                    val df = DecimalFormat("#.##")
-                    df.roundingMode = RoundingMode.CEILING
-                    if (posicaoConsumo!! > 0) {
-                        textConsumo.text =
-                            "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L com ${listaConsumo!![posicaoConsumo!! - 1].combustivel}"
-                    } else {
-                        textConsumo.text = "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L"
-
-                    }
-                }
-            }).execute()
-
+//        CarregaListaConsumoTask(consumoDAO!!, veiculo.idVeiculo!!,
+//            object :CarregaListaConsumoTask.CarregadoListener{
+//                override fun carregado(lista: MutableList<Consumo>) {
+//                    listaConsumo = lista
+//                    val df = DecimalFormat("#.##")
+//                    df.roundingMode = RoundingMode.CEILING
+//                    if (posicaoConsumo!! > 0) {
+//                        textConsumo.text =
+//                            "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L com ${listaConsumo!![posicaoConsumo!! - 1].combustivel}"
+//                    } else {
+//                        textConsumo.text = "Consumo: ${df.format(consumo!!.consumoTotal)}Km/L"
+//
+//                    }
+//                }
+//            }).execute()
+//
 
 
 

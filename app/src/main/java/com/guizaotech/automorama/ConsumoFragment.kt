@@ -1,42 +1,49 @@
 package com.guizaotech.automorama
 
-import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.guizaotech.automorama.asyncTask.CarregaListaConsumoTask
 import com.guizaotech.automorama.custom.ListaConsumoRecyclerView
 import com.guizaotech.automorama.custom.OnItemClickListener
 import com.guizaotech.automorama.database.AutomoramaDatabase
-import com.guizaotech.automorama.database.RoomConsumoDao
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Consumo
 import com.guizaotech.automorama.modelo.Veiculo
-import kotlinx.android.synthetic.main.activity_gastos.*
-import kotlinx.android.synthetic.main.activity_lista_consumo.*
+import com.guizaotech.automorama.repository.GastosRepository
+import com.guizaotech.automorama.viewModel.ConsumoViewModel
+import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.content_lista_consumo.*
 
 class ConsumoFragment : Fragment(), Codigos_Activity {
-    private var adapter: ListaConsumoRecyclerView? = null
     private var veiculo: Veiculo? = null
-    private var consumoDAO: RoomConsumoDao? = null
     private var listaConsumo: MutableList<Consumo>? = null
+
+
+    private val adapter by lazy {
+        ListaConsumoRecyclerView(context = this.requireContext())
+    }
+
+    private val viewModel by lazy {
+        val repository = GastosRepository(
+            AutomoramaDatabase.getInstance(requireContext()).getRoomConsumoDAO()
+        )
+        val factory = ListaConsumoViewModelFactory(repository)
+        val provedor = ViewModelProviders.of(this, factory)
+        provedor.get(ConsumoViewModel::class.java)
+    }
+
+
 
     companion object {
         fun newInstance() = ConsumoFragment()
     }
 
-
-    override fun onAttach(context: Context?) {
-        consumoDAO = AutomoramaDatabase.getInstance(context!!).getRoomConsumoDAO()
-        super.onAttach(context)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,10 +54,7 @@ class ConsumoFragment : Fragment(), Codigos_Activity {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-    }
+
 
     override fun onStart() {
         super.onStart()
@@ -58,24 +62,30 @@ class ConsumoFragment : Fragment(), Codigos_Activity {
     }
 
     private fun preencheDados() {
-        val parametros = activity!!.intent.extras
+        val parametros = requireActivity().intent.extras!!
         veiculo = parametros.getSerializable("veiculo") as Veiculo
 
         listaConsumo(veiculo!!.idVeiculo)
 
         verificaTamanhoLista()
     }
-    fun listaConsumo(idVeiculo: Long?){
-        CarregaListaConsumoTask(consumoDAO!!, idVeiculo!!,
-            object : CarregaListaConsumoTask.CarregadoListener{
-                override fun carregado(lista: MutableList<Consumo>) {
-                    listaConsumo = lista
-                    configuraAdapter(listaConsumo!!)
-                    configuraLayoutManager()
-                    verificaTamanhoLista()
-                }
-            }).execute()
+    fun listaConsumo(idVeiculo: Long){
+        viewModel.buscaTodosConsummo(idVeiculo = idVeiculo).observe(this, Observer { resource ->
+            resource.dado?.let { lista ->
+                listaConsumo = lista.toMutableList()
+                adapter.atualiza(lista)
+                configuraLayout()
+                verificaTamanhoLista()
+            }
+        })
+
     }
+
+    fun configuraLayout(){
+        configuraLayoutManager()
+        configuraAdapter()
+    }
+
     private fun verificaTamanhoLista() {
         if (listaConsumo != null){
             if (listaConsumo!!.size > 0) {
@@ -87,15 +97,14 @@ class ConsumoFragment : Fragment(), Codigos_Activity {
         }
     }
     private fun configuraLayoutManager() {
-        val layoutManager = LinearLayoutManager(context!!)
+        val layoutManager = LinearLayoutManager(requireContext())
         lista_consumo_view.layoutManager = layoutManager
     }
 
-    private fun configuraAdapter(consumo: MutableList<Consumo>) {
-        adapter = ListaConsumoRecyclerView(consumo, context!!)
+    private fun configuraAdapter() {
         lista_consumo_view.adapter = adapter
 
-        adapter!!.onItemClickListener = object : OnItemClickListener {
+        adapter.onItemClickListener = object : OnItemClickListener {
             override fun onItemClick(item: Any, posicao: Int) {
                 val detalhes = Intent(activity, DetalhesConsumoActivity::class.java)
                 detalhes.putExtra("veiculo", veiculo)

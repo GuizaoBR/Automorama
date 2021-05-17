@@ -29,8 +29,8 @@ class ManutencaoFragment : Fragment(), Codigos_Activity {
         fun newInstance() = ManutencaoFragment()
     }
 
-    override fun onAttach(context: Context?) {
-        manutencaoDAO = AutomoramaDatabase.getInstance(context!!).getRoomManutencaoDAO()
+    override fun onAttach(context: Context) {
+        manutencaoDAO = AutomoramaDatabase.getInstance(requireContext()).getRoomManutencaoDAO()
         super.onAttach(context)
     }
 
@@ -49,8 +49,8 @@ class ManutencaoFragment : Fragment(), Codigos_Activity {
     }
 
     private fun preencheDados() {
-        val parametros = activity!!.intent.extras
-        veiculo = parametros.getSerializable("veiculo") as Veiculo
+        val parametros = requireActivity().intent.extras
+        veiculo = parametros?.getSerializable("veiculo") as Veiculo
 
         listaManutencao(veiculo!!.idVeiculo)
 
@@ -78,12 +78,12 @@ class ManutencaoFragment : Fragment(), Codigos_Activity {
         }
     }
     private fun configuraLayoutManager() {
-        val layoutManager = LinearLayoutManager(context!!)
+        val layoutManager = LinearLayoutManager(requireContext())
         lista_manutencao_view.layoutManager = layoutManager
     }
 
     private fun configuraAdapter(manutencao: MutableList<Manutencao>) {
-        adapter = ListaManutencaoRecyclerView(manutencao, context!!)
+        adapter = ListaManutencaoRecyclerView(manutencao, requireContext())
         lista_manutencao_view.adapter = adapter
 
         adapter!!.onItemClickListener = object : OnItemClickListener {

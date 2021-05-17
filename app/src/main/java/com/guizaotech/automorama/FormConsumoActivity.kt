@@ -8,17 +8,20 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.guizaotech.automorama.asyncTask.AdicionaConsumoTask
-import com.guizaotech.automorama.asyncTask.CarregaListaConsumoTask
 import com.guizaotech.automorama.asyncTask.EditaConsumoTask
 import com.guizaotech.automorama.database.AutomoramaDatabase
 import com.guizaotech.automorama.database.RoomConsumoDao
 import com.guizaotech.automorama.helpers.HelperConsumo
 import com.guizaotech.automorama.modelo.Consumo
 import com.guizaotech.automorama.modelo.Veiculo
+import com.guizaotech.automorama.repository.GastosRepository
+import com.guizaotech.automorama.viewModel.ConsumoViewModel
+import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.activity_form_consumo.*
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,10 +29,17 @@ import java.util.*
 class FormConsumoActivity : AppCompatActivity() {
 
 
-    val calendario = Calendar.getInstance()!!
-    var daoConsumo : RoomConsumoDao? = null
-    var listaConsumo: MutableList<Consumo>? = null
+    val calendario = Calendar.getInstance()
     var consumo: Consumo? = null
+
+    private val viewModel by lazy {
+        val repository = GastosRepository(
+            AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
+        )
+        val factory = ListaConsumoViewModelFactory(repository)
+        val provedor = ViewModelProviders.of(this, factory)
+        provedor.get(ConsumoViewModel::class.java)
+    }
 
     private val helperConsumo: HelperConsumo
         get() {
@@ -46,14 +56,13 @@ class FormConsumoActivity : AppCompatActivity() {
             finish()
         }
         val parametros = intent.extras
-        val veiculo = parametros.getSerializable("veiculo") as Veiculo
+        val veiculo = parametros?.getSerializable("veiculo") as Veiculo
 
 
         if (parametros.getSerializable("consumo") != null) {
             consumo = parametros.getSerializable("consumo") as Consumo
         }
 
-        daoConsumo = AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
 
 
 
@@ -61,18 +70,18 @@ class FormConsumoActivity : AppCompatActivity() {
 
         //carregaListaConsumo(veiculo)
 
-        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
-            object : CarregaListaConsumoTask.CarregadoListener {
-                override fun carregado(lista: MutableList<Consumo>) {
-                    listaConsumo = lista
-                    if (consumo != null) {
-                        helperConsumo.preencheConsumo(consumo!!)
-                    } else if (listaConsumo!!.isNotEmpty()) {
-                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
-                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
-                    }
-                }
-            }).execute()
+//        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
+//            object : CarregaListaConsumoTask.CarregadoListener {
+//                override fun carregado(lista: MutableList<Consumo>) {
+//                    listaConsumo = lista
+//                    if (consumo != null) {
+//                        helperConsumo.preencheConsumo(consumo!!)
+//                    } else if (listaConsumo!!.isNotEmpty()) {
+//                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
+//                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
+//                    }
+//                }
+//            }).execute()
         configuraSpinner(combustivel)
 
         val selecionarData = selecionaData()
@@ -100,58 +109,69 @@ class FormConsumoActivity : AppCompatActivity() {
         btSalvar.setOnClickListener {
             if(helperConsumo.ehValido()) {
                 val novoConsumo: Consumo = helperConsumo.getConsumo()
-                if (consumo!= null){
+                if (consumo != null){
                     novoConsumo.idConsumo = consumo!!.idConsumo
                     novoConsumo.idVeiculo = consumo!!.idVeiculo
                 }
-                when {
-                    novoConsumo.idConsumo != 0L -> {
-                        btSalvar.isClickable = false
-                        converteParaDataEUA(novoConsumo)
-                        EditaConsumoTask(daoConsumo!!, novoConsumo,
-                            object : EditaConsumoTask.FinalizaListener{
-                                override fun finaliza() {
-                                    enviaDados(novoConsumo)
-                                    finish()
-                                }
-                            }).execute()
-
-                    }
-                    //verificaCampos(novoConsumo) -> Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
-                    else -> {
-                        btSalvar.isClickable = false
-                        converteParaDataEUA(novoConsumo)
-                        novoConsumo.idVeiculo = veiculo.idVeiculo
-                        AdicionaConsumoTask(daoConsumo!!, novoConsumo,
-                            object: AdicionaConsumoTask.SalvoListener{
-                                override fun salvo() {
-                                    if (listaConsumo!!.size  > 0 ){
-                                        novoConsumo.idConsumo = listaConsumo!!.last().idConsumo + 1
-                                    }
-                                    enviaDados(novoConsumo)
-                                    finish()
-                                }
-                            }).execute()
-                    }
+                runBlocking {
+                   salva(novoConsumo)
                 }
+//                when {
+//                    novoConsumo.idConsumo != 0L -> {
+//                        btSalvar.isClickable = false
+//                        converteParaDataEUA(novoConsumo)
+//                        EditaConsumoTask(daoConsumo!!, novoConsumo,
+//                            object : EditaConsumoTask.FinalizaListener{
+//                                override fun finaliza() {
+//                                    enviaDados(novoConsumo)
+//                                    finish()
+//                                }
+//                            }).execute()
+//
+//                    }
+//                    //verificaCampos(novoConsumo) -> Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
+//                    else -> {
+//                        btSalvar.isClickable = false
+//                        converteParaDataEUA(novoConsumo)
+//                        novoConsumo.idVeiculo = veiculo.idVeiculo
+////                        AdicionaConsumoTask(daoConsumo!!, novoConsumo,
+////                            object: AdicionaConsumoTask.SalvoListener{
+////                                override fun salvo() {
+////                                    if (listaConsumo!!.size  > 0 ){
+////                                        novoConsumo.idConsumo = listaConsumo!!.last().idConsumo + 1
+////                                    }
+////                                    enviaDados(novoConsumo)
+////                                    finish()
+////                                }
+////                            }).execute()
+//                    }
+//                }
 
             }
         }
     }
 
+    private suspend fun salva(novoConsumo: Consumo){
+        viewModel.salvaConsumo(consumo = novoConsumo).observe(this, {
+            it.dado?.let {
+                finish()
+            }
+        })
+    }
+
     private fun carregaListaConsumo(veiculo: Veiculo) {
-        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
-            object : CarregaListaConsumoTask.CarregadoListener {
-                override fun carregado(lista: MutableList<Consumo>) {
-                    listaConsumo = lista
-                    if (consumo != null) {
-                        helperConsumo.preencheConsumo(consumo!!)
-                    } else if (listaConsumo!!.isNotEmpty()) {
-                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
-                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
-                    }
-                }
-            }).execute()
+//        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
+//            object : CarregaListaConsumoTask.CarregadoListener {
+//                override fun carregado(lista: MutableList<Consumo>) {
+//                    listaConsumo = lista
+//                    if (consumo != null) {
+//                        helperConsumo.preencheConsumo(consumo!!)
+//                    } else if (listaConsumo!!.isNotEmpty()) {
+//                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
+//                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
+//                    }
+//                }
+//            }).execute()
     }
 
     override fun onResume() {
