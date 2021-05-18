@@ -57,4 +57,13 @@ class AutomoramaMigrations {
         }
     }
 
+    val MIGRATION_9_10 = object : Migration(9, 10) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+//            database.execSQL("ALTER TABLE Consumo RENAME TO Consumo_old;")
+//            database.execSQL("CREATE TABLE Consumo(idConsumo INTEGER PRIMARY KEY AUTOINCREMENT, kmAtual INTEGER, combustivel TEXT, litros REAL,  data TEXT, kmAnterior INTEGER, consumoTotal REAL, idVeiculo INTEGER, tanqueCompleto INTEGER(1), valor REAL not null default 0.0, FOREIGN KEY (idVeiculo) REFERENCES Veiculo(idVeiculo) ON DELETE CASCADE ON UPDATE CASCADE)")
+//            database.execSQL("INSERT INTO Consumo(idConsumo, kmAtual, combustivel, litros,  data, kmAnterior, consumoTotal, idVeiculo, tanqueCompleto) SELECT idConsumo, kmAtual, combustivel, litros,  data, kmAnterior, consumoTotal, idVeiculo, tanqueCompleto FROM Consumo_old ")
+//            database.execSQL("DROP TABLE Consumo_old")
+        }
+    }
+
 }

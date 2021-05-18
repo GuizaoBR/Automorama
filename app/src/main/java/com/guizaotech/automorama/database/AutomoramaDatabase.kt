@@ -10,7 +10,7 @@ import com.guizaotech.automorama.modelo.Manutencao
 import com.guizaotech.automorama.modelo.Veiculo
 
 
-@Database(entities = [Veiculo::class, Consumo::class, Manutencao::class], version = 9)
+@Database(entities = [Veiculo::class, Consumo::class, Manutencao::class], version = 10)
 abstract class AutomoramaDatabase: RoomDatabase() {
 
     abstract fun getRoomVeiculoDAO(): RoomVeiculoDao
@@ -30,7 +30,8 @@ abstract class AutomoramaDatabase: RoomDatabase() {
                     migrations.MIGRATION_5_6,
                     migrations.MIGRATION_6_7,
                     migrations.MIGRATION_7_8,
-                    migrations.MIGRATION_8_9)
+                    migrations.MIGRATION_8_9,
+                    migrations.MIGRATION_9_10)
                 .build()
         }
     }
