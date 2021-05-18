@@ -2,18 +2,13 @@ package com.guizaotech.automorama
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import com.guizaotech.automorama.database.AutomoramaDatabase
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Veiculo
-import com.guizaotech.automorama.repository.GastosRepository
 import com.guizaotech.automorama.ui.main.SectionsPagerAdapter
-import com.guizaotech.automorama.viewModel.ConsumoViewModel
-import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.activity_detalhes_consumo.toolbar
 import kotlinx.android.synthetic.main.activity_gastos.*
 
