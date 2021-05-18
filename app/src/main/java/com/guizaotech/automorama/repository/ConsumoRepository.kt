@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlin.Exception
 
-class GastosRepository(private val dao: RoomConsumoDao) {
+class ConsumoRepository(private val dao: RoomConsumoDao) {
 
     private val listaConsumo = MutableLiveData<Resource<List<Consumo>?>>()
 
@@ -70,7 +70,16 @@ class GastosRepository(private val dao: RoomConsumoDao) {
         var errorMessage: String? = null
         val task = coroutineScope.launch {
             try {
-                dao.salva(consumo)
+                when (consumo.idConsumo){
+                    0L -> {
+                        dao.salva(consumo)
+                    }
+                    else -> {
+                        dao.altera(consumo)
+                    }
+
+                }
+
             } catch (e: Exception){
                 errorMessage = e.message
                 cancel()
