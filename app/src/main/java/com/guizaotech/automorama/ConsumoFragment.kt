@@ -15,7 +15,7 @@ import com.guizaotech.automorama.database.AutomoramaDatabase
 import com.guizaotech.automorama.helpers.Codigos_Activity
 import com.guizaotech.automorama.modelo.Consumo
 import com.guizaotech.automorama.modelo.Veiculo
-import com.guizaotech.automorama.repository.GastosRepository
+import com.guizaotech.automorama.repository.ConsumoRepository
 import com.guizaotech.automorama.viewModel.ConsumoViewModel
 import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.content_lista_consumo.*
@@ -30,7 +30,7 @@ class ConsumoFragment : Fragment(), Codigos_Activity {
     }
 
     private val viewModel by lazy {
-        val repository = GastosRepository(
+        val repository = ConsumoRepository(
             AutomoramaDatabase.getInstance(requireContext()).getRoomConsumoDAO()
         )
         val factory = ListaConsumoViewModelFactory(repository)
