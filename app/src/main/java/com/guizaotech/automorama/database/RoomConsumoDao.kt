@@ -21,4 +21,7 @@ interface RoomConsumoDao {
 
     @Update
     fun altera(consumo: Consumo)
+
+    @Query("SELECT * FROM CONSUMO WHERE idVeiculo = :idVeiculo ORDER BY idVeiculo DESC LIMIT 1  ")
+    fun ultimoConsumo(idVeiculo: Long): Consumo
 }

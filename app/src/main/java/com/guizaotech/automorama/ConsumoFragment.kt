@@ -109,7 +109,6 @@ class ConsumoFragment : Fragment(), Codigos_Activity {
                 val detalhes = Intent(activity, DetalhesConsumoActivity::class.java)
                 detalhes.putExtra("veiculo", veiculo)
                 detalhes.putExtra("consumo", item as Consumo)
-                detalhes.putExtra("posicaoConsumo", posicao)
                 startActivityForResult(detalhes, CODIGO_DETALHES)
 
             }

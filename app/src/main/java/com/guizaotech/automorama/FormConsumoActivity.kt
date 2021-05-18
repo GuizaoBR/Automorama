@@ -108,6 +108,7 @@ class FormConsumoActivity : AppCompatActivity() {
     private suspend fun salva(novoConsumo: Consumo){
         viewModel.salvaConsumo(consumo = novoConsumo).observe(this, {
             it.dado?.let {
+                enviaDados(novoConsumo)
                 finish()
             }
         })
@@ -147,7 +148,7 @@ class FormConsumoActivity : AppCompatActivity() {
 
     private fun enviaDados(novoConsumo: Consumo) {
         val intentOk = Intent()
-        intentOk.putExtra("consumo", novoConsumo)
+        intentOk.putExtra("consumoAlterado", novoConsumo)
         setResult(Activity.RESULT_OK, intentOk)
     }
 
