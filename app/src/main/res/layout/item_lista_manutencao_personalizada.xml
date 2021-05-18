@@ -46,12 +46,32 @@
         android:id="@+id/textValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="R500,00"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="8dp"
+        android:text="R$ 500,00"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textTitulo"
-        app:layout_constraintTop_toBottomOf="@+id/textTitulo" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textDescricao"
+        app:layout_constraintTop_toBottomOf="@+id/textDescricao" />
+
+    <TextView
+        android:id="@+id/textDescricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="R$500,00"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textTitulo"
+        tools:text="@string/large_text" />
 
     <ImageView
             android:layout_width="43dp"

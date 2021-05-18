@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/veiculoSelecionado"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="#ffffff"
@@ -46,6 +46,8 @@
         android:text="Abastecido com: Gasolina Aditivada"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textConsumo"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textConsumo"
         app:layout_constraintTop_toBottomOf="@+id/textConsumo"
         tools:targetApi="lollipop" />
@@ -55,7 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:elevation="20sp"
         android:shadowColor="#fff"
@@ -142,7 +144,7 @@
         android:layout_width="209dp"
         android:layout_height="197dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
