@@ -46,33 +46,22 @@ class CustomListConsumo(private val listaConsumo: List<Consumo>, private val act
         val consumo = getItem(position)
 
 
-
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
 
-        //holder.consumoLitro!!.text = "${df.format(consumo.consumoTotal)}Km/L"
         holder.consumoLitro!!.text = activity.applicationContext.getString(R.string.item_lista_consumo_consumo, df.format(consumo.consumoTotal))
 
-        val converter =  consumo.data!!.split("-")
-        val ano = converter[0]
-        val mes = converter[1]
-        val dia = converter[2]
-
-        //holder.data!!.text = "$dia/$mes/$ano"
-        holder.data!!.text = activity.applicationContext.getString(R.string.data, dia, mes, ano)
-        //holder.combAbastecido!!.text = "Abastecido com ${consumo.combustivel}"
         holder.combAbastecido!!.text = activity.applicationContext.getString(R.string.item_lista_consumo_abastecido)
 
 
        if (position > 0){
-            //holder.combPercorrido!!.text = "Percorrido com ${getItemAnterior(position).combustivel}"
             holder.combPercorrido!!.text = activity.applicationContext.getString(R.string.item_lista_consumo_percorrido,getItemAnterior(position).combustivel)
             holder.combPercorrido!!.visibility = View.VISIBLE
         } else {
             holder.combPercorrido!!.visibility = View.INVISIBLE
         }
 
-        if (consumo.tanqueCompleto == 1){
+        if (consumo.tanqueCompleto){
             holder.tanqueCheio!!.setImageResource(R.drawable.ic_tanque_cheio)
         } else{
             holder.tanqueCheio!!.setImageResource(R.drawable.ic_tanque_nao_cheio)

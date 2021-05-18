@@ -7,17 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import com.guizaotech.automorama.asyncTask.AdicionaConsumoTask
-import com.guizaotech.automorama.asyncTask.EditaConsumoTask
 import com.guizaotech.automorama.database.AutomoramaDatabase
-import com.guizaotech.automorama.database.RoomConsumoDao
 import com.guizaotech.automorama.helpers.HelperConsumo
 import com.guizaotech.automorama.modelo.Consumo
 import com.guizaotech.automorama.modelo.Veiculo
-import com.guizaotech.automorama.repository.GastosRepository
+import com.guizaotech.automorama.repository.ConsumoRepository
 import com.guizaotech.automorama.viewModel.ConsumoViewModel
 import com.guizaotech.automorama.viewModel.factory.ListaConsumoViewModelFactory
 import kotlinx.android.synthetic.main.activity_form_consumo.*
@@ -33,17 +29,18 @@ class FormConsumoActivity : AppCompatActivity() {
     var consumo: Consumo? = null
 
     private val viewModel by lazy {
-        val repository = GastosRepository(
+        val repository = ConsumoRepository(
             AutomoramaDatabase.getInstance(this).getRoomConsumoDAO()
         )
         val factory = ListaConsumoViewModelFactory(repository)
         val provedor = ViewModelProviders.of(this, factory)
         provedor.get(ConsumoViewModel::class.java)
     }
+    private var veiculo: Veiculo? = null
 
     private val helperConsumo: HelperConsumo
         get() {
-            val helper = HelperConsumo(this)
+            val helper = HelperConsumo(this, veiculo!!.idVeiculo)
             return helper
         }
 
@@ -56,7 +53,7 @@ class FormConsumoActivity : AppCompatActivity() {
             finish()
         }
         val parametros = intent.extras
-        val veiculo = parametros?.getSerializable("veiculo") as Veiculo
+        veiculo = parametros?.getSerializable("veiculo") as Veiculo
 
 
         if (parametros.getSerializable("consumo") != null) {
@@ -65,23 +62,8 @@ class FormConsumoActivity : AppCompatActivity() {
 
 
 
+        veiculo(veiculo!!)
 
-        veiculo(veiculo)
-
-        //carregaListaConsumo(veiculo)
-
-//        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
-//            object : CarregaListaConsumoTask.CarregadoListener {
-//                override fun carregado(lista: MutableList<Consumo>) {
-//                    listaConsumo = lista
-//                    if (consumo != null) {
-//                        helperConsumo.preencheConsumo(consumo!!)
-//                    } else if (listaConsumo!!.isNotEmpty()) {
-//                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
-//                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
-//                    }
-//                }
-//            }).execute()
         configuraSpinner(combustivel)
 
         val selecionarData = selecionaData()
@@ -108,46 +90,18 @@ class FormConsumoActivity : AppCompatActivity() {
 
         btSalvar.setOnClickListener {
             if(helperConsumo.ehValido()) {
-                val novoConsumo: Consumo = helperConsumo.getConsumo()
-                if (consumo != null){
-                    novoConsumo.idConsumo = consumo!!.idConsumo
-                    novoConsumo.idVeiculo = consumo!!.idVeiculo
-                }
+                val novoConsumo: Consumo = helperConsumo.getConsumo(consumo!!)
+
                 runBlocking {
                    salva(novoConsumo)
                 }
-//                when {
-//                    novoConsumo.idConsumo != 0L -> {
-//                        btSalvar.isClickable = false
-//                        converteParaDataEUA(novoConsumo)
-//                        EditaConsumoTask(daoConsumo!!, novoConsumo,
-//                            object : EditaConsumoTask.FinalizaListener{
-//                                override fun finaliza() {
-//                                    enviaDados(novoConsumo)
-//                                    finish()
-//                                }
-//                            }).execute()
-//
-//                    }
-//                    //verificaCampos(novoConsumo) -> Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_LONG).show()
-//                    else -> {
-//                        btSalvar.isClickable = false
-//                        converteParaDataEUA(novoConsumo)
-//                        novoConsumo.idVeiculo = veiculo.idVeiculo
-////                        AdicionaConsumoTask(daoConsumo!!, novoConsumo,
-////                            object: AdicionaConsumoTask.SalvoListener{
-////                                override fun salvo() {
-////                                    if (listaConsumo!!.size  > 0 ){
-////                                        novoConsumo.idConsumo = listaConsumo!!.last().idConsumo + 1
-////                                    }
-////                                    enviaDados(novoConsumo)
-////                                    finish()
-////                                }
-////                            }).execute()
-//                    }
-//                }
 
             }
+        }
+        if (consumo != null){
+            preencherCampos()
+        } else {
+            consumo = Consumo()
         }
     }
 
@@ -159,27 +113,15 @@ class FormConsumoActivity : AppCompatActivity() {
         })
     }
 
-    private fun carregaListaConsumo(veiculo: Veiculo) {
-//        CarregaListaConsumoTask(daoConsumo!!, veiculo.idVeiculo,
-//            object : CarregaListaConsumoTask.CarregadoListener {
-//                override fun carregado(lista: MutableList<Consumo>) {
-//                    listaConsumo = lista
-//                    if (consumo != null) {
-//                        helperConsumo.preencheConsumo(consumo!!)
-//                    } else if (listaConsumo!!.isNotEmpty()) {
-//                        val kmAnterior = findViewById<TextView>(R.id.kmAnterior)
-//                        kmAnterior.text = listaConsumo!!.last().kmAtual.toString()
-//                    }
-//                }
-//            }).execute()
-    }
 
     override fun onResume() {
         super.onResume()
 
     }
 
-
+    fun preencherCampos(){
+        helperConsumo.preencheConsumo(consumo!!)
+    }
 
     private fun selecionaData(): DatePickerDialog.OnDateSetListener {
         return DatePickerDialog.OnDateSetListener { view, ano, mes, dia ->
@@ -194,15 +136,14 @@ class FormConsumoActivity : AppCompatActivity() {
 
         if (veiculo.apelido == "") {
             veiculoSelecionado.text = resources.getString(R.string.veiculo, veiculo.modelo, veiculo.anoFabricacao.toString(), veiculo.anoModelo.toString())
-            //veiculoSelecionado.text = "${veiculo.modelo} ${veiculo.anoFabricacao}/${veiculo.anoModelo}"
         } else {
             veiculoSelecionado.text = veiculo.apelido
         }
     }
 
-    private fun verificaCampos(novoConsumo: Consumo) =
-        novoConsumo.combustivel == "" || novoConsumo.data == "" || novoConsumo.kmAnterior == 0 ||
-                novoConsumo.kmAtual == 0 || novoConsumo.litros == 0.0
+//    private fun verificaCampos(novoConsumo: Consumo) =
+//        novoConsumo.combustivel == "" || novoConsumo.data.time.toString() == "" || novoConsumo.kmAnterior == 0 ||
+//                novoConsumo.kmAtual == 0 || novoConsumo.litros == 0.0
 
     private fun enviaDados(novoConsumo: Consumo) {
         val intentOk = Intent()
@@ -210,13 +151,6 @@ class FormConsumoActivity : AppCompatActivity() {
         setResult(Activity.RESULT_OK, intentOk)
     }
 
-    private fun converteParaDataEUA(novoConsumo: Consumo) {
-        val converter = novoConsumo.data.split("/")
-        val ano = converter[2]
-        val mes = converter[1]
-        val dia = converter[0]
-        novoConsumo.data = "$ano-$mes-$dia"
-    }
 
     private fun configuraSpinner(spinner: Spinner) {
         val listaSpinner = ArrayList<String>()

@@ -11,6 +11,7 @@ import com.guizaotech.automorama.R
 import com.guizaotech.automorama.modelo.Consumo
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 
 class ListaConsumoRecyclerView(
     private var listaConsumo: MutableList<Consumo> = mutableListOf(),
@@ -84,11 +85,11 @@ class ListaConsumoRecyclerView(
             df.roundingMode = RoundingMode.CEILING
             consumoLitro!!.text = context.resources.getString(R.string.item_lista_consumo_consumo, df.format(consumo.consumoTotal))
 
-            val converter =  consumo.data.split("-")
-            val ano = converter[0]
-            val mes = converter[1]
-            val dia = converter[2]
-            data!!.text = context.resources.getString(R.string.data, dia, mes, ano)
+
+            val myFormat = "dd/MM/yyyy"
+            val sdf = SimpleDateFormat(myFormat)
+
+            data!!.text = sdf.format(consumo.data)
 
             combAbastecido!!.text = context.resources.getString(R.string.item_lista_consumo_abastecido, consumo.combustivel)
 
@@ -101,7 +102,7 @@ class ListaConsumoRecyclerView(
             }
 
 
-            if (consumo.tanqueCompleto == 1){
+            if (consumo.tanqueCompleto){
                 tanqueCheio!!.setImageResource(R.drawable.ic_tanque_cheio)
             } else {
                 tanqueCheio!!.setImageResource(R.drawable.ic_tanque_nao_cheio)

@@ -83,7 +83,7 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
         textPercorrido.text = "Percorrido: " + (consumo!!.kmAtual!!.toDouble() - consumo!!.kmAnterior!!.toDouble()).toString() + "Km"
 
 
-        if (consumo!!.tanqueCompleto == 1) {
+        if (consumo!!.tanqueCompleto) {
             textTanqueAbastecido.text = "Tanque abastecido por completo"
         } else {
             textTanqueAbastecido.text = "Tanque não abastecido por completo"
@@ -133,11 +133,11 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
     }
 
     private fun converteParaDataBR(consumo: Consumo, data: TextView) {
-        val converter = consumo.data!!.split("-")
-        val ano = converter[0]
-        val mes = converter[1]
-        val dia = converter[2]
-        data.text = "Data: $dia/$mes/$ano"
+//        val converter = consumo.data!!.split("-")
+//        val ano = converter[0]
+//        val mes = converter[1]
+//        val dia = converter[2]
+//        data.text = "Data: $dia/$mes/$ano"
     }
 
 
@@ -186,7 +186,7 @@ class DetalhesConsumoActivity : AppCompatActivity(), Codigos_Activity {
             "Percorrido: " + (consumo!!.kmAtual!!.toDouble() - consumo!!.kmAnterior!!.toDouble()).toString() + "Km"
 
 
-        if (consumo!!.tanqueCompleto == 1) {
+        if (consumo!!.tanqueCompleto) {
             textTanqueAbastecido.text = "Tanque abastecido por completo"
         } else {
             textTanqueAbastecido.text = "Tanque não abastecido por completo"

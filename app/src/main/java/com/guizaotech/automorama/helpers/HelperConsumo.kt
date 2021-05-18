@@ -3,9 +3,14 @@ package com.guizaotech.automorama.helpers
 import android.widget.*
 import com.guizaotech.automorama.FormConsumoActivity
 import com.guizaotech.automorama.R
+import com.guizaotech.automorama.custom.formatString
+import com.guizaotech.automorama.custom.toDate
 import com.guizaotech.automorama.modelo.Consumo
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
-class HelperConsumo(activityForm: FormConsumoActivity)  {
+class HelperConsumo(activityForm: FormConsumoActivity, private val idVeiculo: Long)  {
 
     private val campoKmAnterior: EditText = activityForm.findViewById(R.id.kmAnterior)
     private val campoKmAtual: EditText = activityForm.findViewById(R.id.kmAtual)
@@ -15,9 +20,6 @@ class HelperConsumo(activityForm: FormConsumoActivity)  {
     private val campoTanqueCheio : CheckBox = activityForm.findViewById(R.id.checkTanque)
     private  val campoValor: EditText = activityForm.findViewById(R.id.valor)
     private val context = activityForm.applicationContext
-
-    private var consumo: Consumo = Consumo()
-
 
     fun temVazio(): Boolean {
         var temVazio: Boolean = false
@@ -79,11 +81,15 @@ class HelperConsumo(activityForm: FormConsumoActivity)  {
         return ehMaior
     }
 
-    fun getConsumo(): Consumo {
+    fun getConsumo(consumo: Consumo): Consumo {
+        consumo.idVeiculo = idVeiculo
         consumo.kmAnterior = campoKmAnterior.text.toString().toInt()
         consumo.kmAtual = campoKmAtual.text.toString().toInt()
         consumo.combustivel = campoCombustivel.selectedItem.toString()
-        consumo.data = campoData.text.toString()
+
+
+
+        consumo.data = campoData.text.toString().toDate("dd/MM/yyyy")!!
         consumo.litros = campoLitros.text.toString().toDouble()
         consumo.valor = campoValor.text.toString().toDouble()
 
@@ -93,11 +99,7 @@ class HelperConsumo(activityForm: FormConsumoActivity)  {
             consumo.consumoTotal = (campoKmAtual.text.toString().toDouble() - campoKmAnterior.text.toString().toDouble()) /
                     campoLitros.text.toString().toDouble()
         }
-        if (campoTanqueCheio.isChecked){
-            consumo.tanqueCompleto = 1
-        } else {
-            consumo.tanqueCompleto = 0
-        }
+        consumo.tanqueCompleto = campoTanqueCheio.isChecked
 
         return consumo
     }
@@ -107,19 +109,14 @@ class HelperConsumo(activityForm: FormConsumoActivity)  {
         campoKmAtual.setText(consumo.kmAtual.toString())
         campoLitros.setText(consumo.litros.toString())
         campoValor.setText(consumo.valor.toString())
-        val converter = consumo.data.split("-")
-        val ano = converter[0]
-        val mes = converter[1]
-        val dia = converter[2]
-        val data = context.resources.getString(R.string.data, dia, mes, ano)
-        campoData.setText(data)
-        //campoData.setText("$dia/$mes/$ano")
+
+        campoData.setText(consumo.data.toString())
+        campoData.setText(consumo.data.formatString("dd/MM/yyyy"))
 
 
         campoCombustivel.setSelection((campoCombustivel.adapter as? ArrayAdapter<String>)!!.getPosition(consumo.combustivel))
 
-        campoTanqueCheio.isChecked = consumo.tanqueCompleto == 1
-        this.consumo = consumo
+        campoTanqueCheio.isChecked = consumo.tanqueCompleto
 
     }
     

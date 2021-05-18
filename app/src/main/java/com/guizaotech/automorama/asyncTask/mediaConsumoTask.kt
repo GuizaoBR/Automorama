@@ -23,7 +23,7 @@ class mediaConsumoTask(
             df.roundingMode = RoundingMode.CEILING
             for (consumo in listaConsumoTanqueCheio) {
                 if (consumo != listaConsumoTanqueCheio[0]) {
-                    if (consumo.tanqueCompleto == 1) {
+                    if (consumo.tanqueCompleto) {
                         somaConsumoTanqueCheio += consumo.consumoTotal!!.toDouble()
                         quantidadeConsumoTanqueCheio++
                     }
