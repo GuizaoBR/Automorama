@@ -82,7 +82,7 @@ class HelperManutencao(activityForm: FormManutencaoActivity)  {
     fun getManutencao(): Manutencao {
         manutencao.titulo = campoTitulo.text.toString()
         manutencao.descricao = campoDescricao.text.toString()
-        manutencao.data = campoData.text.toString()
+        //manutencao.data = campoData.text.toString()
         manutencao.valor = campoValor.text.toString().toFloat()
         manutencao.feito = campoFeito.isChecked
 
@@ -92,13 +92,13 @@ class HelperManutencao(activityForm: FormManutencaoActivity)  {
     fun preencheManutencao(manutecao: Manutencao){
         campoTitulo.setText(manutecao.titulo.toString())
         campoDescricao.setText(manutecao.descricao.toString())
-        campoValor.setText(manutecao.valor.toString())
-        val converter = manutecao.data.split("-")
-        val ano = converter[0]
-        val mes = converter[1]
-        val dia = converter[2]
-        val data = context.resources.getString(R.string.data, dia, mes, ano)
-        campoData.setText(data)
+//        campoValor.setText(manutecao.valor.toString())
+//        val converter = manutecao.data.split("-")
+//        val ano = converter[0]
+//        val mes = converter[1]
+//        val dia = converter[2]
+//        val data = context.resources.getString(R.string.data, dia, mes, ano)
+//        campoData.setText(data)
 
         campoFeito.isChecked = manutecao.feito
 

@@ -2,7 +2,6 @@ package com.guizaotech.automorama.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.guizaotech.automorama.modelo.Resource
 import com.guizaotech.automorama.modelo.Veiculo
 import com.guizaotech.automorama.repository.VeiculosRepository

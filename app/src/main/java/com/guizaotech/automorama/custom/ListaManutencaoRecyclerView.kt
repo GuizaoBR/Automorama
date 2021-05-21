@@ -14,14 +14,14 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 class ListaManutencaoRecyclerView(
-    private var listaManutecao: MutableList<Manutencao>,
+    private var listaManutecao: List<Manutencao>,
     private val context: Context
 ): RecyclerView.Adapter<ListaManutencaoRecyclerView.ConsumoViewHolder>() {
 
     var onItemClickListener : OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumoViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_lista_consumo_personalizada, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_lista_manutencao_personalizada, parent, false)
         return ConsumoViewHolder(view)
     }
 
@@ -34,23 +34,7 @@ class ListaManutencaoRecyclerView(
         holder.vincula(consumo, position)
     }
 
-    fun adiciona(manutencao: Manutencao) {
-        listaManutecao.add(manutencao)
-        notifyDataSetChanged()
-    }
 
-    fun remove(posicao: Int){
-        //configuraListaVeiculos.remove(veiculo)
-        listaManutecao.removeAt(posicao)
-        notifyDataSetChanged()
-
-    }
-
-    fun altera(manutencao: Manutencao, posicao: Int){
-        listaManutecao[posicao] = manutencao
-        notifyDataSetChanged()
-
-    }
 
 
     inner class ConsumoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -76,11 +60,8 @@ class ListaManutencaoRecyclerView(
             df.roundingMode = RoundingMode.CEILING
             valor!!.text = context.resources.getString(R.string.moeda) + df.format(manutencao.valor)
 
-            val converter =  manutencao.data.split("-")
-            val ano = converter[0]
-            val mes = converter[1]
-            val dia = converter[2]
-            data!!.text = context.resources.getString(R.string.data, dia, mes, ano)
+
+            data!!.text = manutencao.data.formatString("dd/MM/yyyy")
 
             titulo!!.text = manutencao.titulo
 
