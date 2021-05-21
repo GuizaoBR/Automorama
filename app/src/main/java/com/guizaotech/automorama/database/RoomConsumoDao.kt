@@ -6,7 +6,7 @@ import com.guizaotech.automorama.modelo.Consumo
 @Dao
 interface RoomConsumoDao {
 
-    @Query("SELECT c.* FROM Consumo c WHERE idVeiculo = :idVeiculo GROUP BY idConsumo ORDER BY data ;")
+    @Query("SELECT c.* FROM Consumo c WHERE idVeiculo = :idVeiculo ORDER BY data ;")
     fun todos(idVeiculo: Long): MutableList<Consumo>
 
     //@Query("SELECT idConsumo, idVeiculo, consumoTotal, tanqueCompleto FROM Consumo c WHERE tanqueCompleto = 1 AND c.idVeiculo = :idVeiculo GROUP BY idConsumo;")
