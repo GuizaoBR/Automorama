@@ -8,7 +8,7 @@ import java.util.*
 
 class DateConverter {
     @TypeConverter
-    fun fromStrubg(value: String): Date? {
+    fun fromString(value: String): Date? {
         return value.toDate("dd/MM/yyyy")
     }
 
